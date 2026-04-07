@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COSMOS VERITY — Artemis II & Apolo 11</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #03050f;
+    --bg2: #070c1a;
+    --bg3: #0c1428;
+    --accent: #4fa3e8;
+    --accent2: #e84f8a;
+    --accent3: #f5c842;
+    --text: #e8eef8;
+    --text2: #8a9bb5;
+    --border: rgba(79,163,232,0.18);
+    --border2: rgba(79,163,232,0.35);
+    --glow: rgba(79,163,232,0.12);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* STARS BACKGROUND */
+  #stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 3rem;
+    background: rgba(3,5,15,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 0.5px solid var(--border);
+  }
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.3rem;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .logo span { color: var(--accent2); }
+  .nav-links { display: flex; gap: 2rem; align-items: center; }
+  .nav-links a {
+    color: var(--text2);
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+  .btn-login {
+    background: transparent;
+    border: 1px solid var(--border2);
+    color: var(--accent);
+    padding: 0.5rem 1.2rem;
+    border-radius: 4px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+  }
+  .btn-login:hover { background: var(--accent); color: var(--bg); }
+
+  /* PAGES */
+  .page { position: relative; z-index: 1; }
+
+  /* HERO */
+  #home {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+  }
+  .hero-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border2);
+    padding: 0.3rem 1rem;
+    border-radius: 2px;
+    display: inline-block;
+  }
+  .hero-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3rem, 8vw, 7rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+  }
+  .hero-title .line1 { display: block; color: var(--text); }
+  .hero-title .line2 { display: block; color: var(--accent); }
+  .hero-title .line3 { display: block; color: var(--accent2); font-size: 0.55em; letter-spacing: 0.1em; margin-top: 0.3em; }
+  .hero-sub {
+    max-width: 580px;
+    color: var(--text2);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin: 1.5rem auto 3rem;
+  }
+  .hero-ctas { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    padding: 0.85rem 2rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    letter-spacing: 0.03em;
+  }
+  .btn-primary:hover { opacity: 0.85; transform: translateY(-2px); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border2);
+    padding: 0.85rem 2rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.95rem;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+  /* SECTIONS */
+  section { padding: 6rem 2rem; }
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+  .section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent2);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    line-height: 1.1;
+  }
+  .section-desc {
+    color: var(--text2);
+    font-size: 1rem;
+    line-height: 1.8;
+    max-width: 620px;
+    margin-bottom: 3rem;
+  }
+
+  /* ARTEMIS SECTION */
+  #artemis { background: var(--bg2); }
+  .artemis-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  .crew-card {
+    background: var(--bg3);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .crew-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+  .crew-avatar {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), #1a3a5e);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: white;
+  }
+  .crew-name { font-weight: 600; font-size: 1rem; margin-bottom: 0.25rem; }
+  .crew-role { font-size: 0.8rem; color: var(--accent); letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+  .crew-desc { font-size: 0.85rem; color: var(--text2); line-height: 1.6; }
+  .crew-badge {
+    display: inline-block;
+    background: rgba(79,163,232,0.1);
+    border: 0.5px solid var(--border2);
+    color: var(--accent);
+    font-size: 0.7rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 2px;
+    margin-top: 0.7rem;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  /* INFO CARDS */
+  .info-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+  .info-card {
+    background: var(--bg3);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+  }
+  .info-card-icon { font-size: 1.8rem; margin-bottom: 0.8rem; }
+  .info-card-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--accent3); }
+  .info-card-val { font-family: 'IBM Plex Mono', monospace; font-size: 1.4rem; font-weight: 500; margin-bottom: 0.4rem; }
+  .info-card-desc { font-size: 0.8rem; color: var(--text2); line-height: 1.5; }
+
+  /* TEORIAS SECTION */
+  #teorias { background: var(--bg); }
+  .teorias-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  .teoria-card {
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s;
+  }
+  .teoria-card:hover { transform: translateY(-3px); }
+  .teoria-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .teoria-card.conspiracy::before { background: var(--accent2); }
+  .teoria-card.fact::before { background: var(--accent); }
+  .teoria-tag {
+    font-size: 0.7rem;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.15em;
+    padding: 0.25rem 0.6rem;
+    border-radius: 2px;
+    display: inline-block;
+    margin-bottom: 1rem;
+  }
+  .teoria-tag.con { background: rgba(232,79,138,0.15); color: var(--accent2); border: 0.5px solid rgba(232,79,138,0.3); }
+  .teoria-tag.fac { background: rgba(79,163,232,0.1); color: var(--accent); border: 0.5px solid var(--border2); }
+  .teoria-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.15rem; margin-bottom: 0.8rem; }
+  .teoria-body { font-size: 0.9rem; color: var(--text2); line-height: 1.75; }
+
+  /* TIMELINE */
+  #timeline { background: var(--bg2); }
+  .timeline { position: relative; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 20px; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--border2), transparent);
+  }
+  .tl-item {
+    padding-left: 60px;
+    margin-bottom: 2.5rem;
+    position: relative;
+  }
+  .tl-dot {
+    position: absolute;
+    left: 12px; top: 4px;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 3px solid var(--bg2);
+  }
+  .tl-dot.alt { background: var(--accent2); }
+  .tl-year {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.3rem;
+  }
+  .tl-year.alt { color: var(--accent2); }
+  .tl-title { font-weight: 600; font-size: 1.05rem; margin-bottom: 0.4rem; }
+  .tl-desc { font-size: 0.88rem; color: var(--text2); line-height: 1.65; }
+
+  /* CONTACT */
+  #contacto { background: var(--bg); }
+  .contact-box {
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 3rem;
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .contact-email {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    color: var(--accent);
+    padding: 0.9rem 2rem;
+    border-radius: 6px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: all 0.2s;
+    margin-top: 1.5rem;
+  }
+  .contact-email:hover { background: var(--accent); color: var(--bg); }
+
+  /* LOGIN MODAL */
+  #login-overlay {
+    display: none;
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(3,5,15,0.92);
+    backdrop-filter: blur(8px);
+    align-items: center;
+    justify-content: center;
+  }
+  #login-overlay.open { display: flex; }
+  .login-modal {
+    background: var(--bg2);
+    border: 0.5px solid var(--border2);
+    border-radius: 12px;
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 420px;
+    position: relative;
+    animation: fadeUp 0.3s ease;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .modal-close {
+    position: absolute; top: 1rem; right: 1rem;
+    background: none; border: none;
+    color: var(--text2); font-size: 1.4rem;
+    cursor: pointer; transition: color 0.2s;
+  }
+  .modal-close:hover { color: var(--text); }
+  .modal-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: var(--accent);
+    margin-bottom: 0.3rem;
+    letter-spacing: 0.1em;
+  }
+  .modal-subtitle { font-size: 0.85rem; color: var(--text2); margin-bottom: 2rem; }
+
+  /* TABS */
+  .tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 1.8rem; }
+  .tab-btn {
+    background: none; border: none;
+    color: var(--text2);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.9rem;
+    padding: 0.7rem 1.2rem;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    margin-bottom: -1px;
+  }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* FORM */
+  .form-group { margin-bottom: 1rem; }
+  .form-label { font-size: 0.8rem; color: var(--text2); margin-bottom: 0.4rem; display: block; letter-spacing: 0.05em; }
+  .form-input {
+    width: 100%;
+    background: var(--bg3);
+    border: 0.5px solid var(--border);
+    color: var(--text);
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-input:focus { border-color: var(--accent); }
+  .form-input::placeholder { color: var(--text2); opacity: 0.5; }
+  .btn-submit {
+    width: 100%;
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    padding: 0.85rem;
+    border-radius: 6px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    margin-top: 0.5rem;
+  }
+  .btn-submit:hover { opacity: 0.85; }
+  .divider {
+    display: flex; align-items: center; gap: 1rem;
+    margin: 1.2rem 0;
+    color: var(--text2); font-size: 0.8rem;
+  }
+  .divider::before, .divider::after {
+    content: ''; flex: 1;
+    height: 0.5px; background: var(--border);
+  }
+  .btn-google {
+    width: 100%;
+    background: transparent;
+    border: 0.5px solid var(--border2);
+    color: var(--text);
+    padding: 0.8rem;
+    border-radius: 6px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 0.7rem;
+    transition: all 0.2s;
+  }
+  .btn-google:hover { border-color: var(--accent); background: var(--glow); }
+  .google-icon { width: 18px; height: 18px; }
+  .form-error { color: var(--accent2); font-size: 0.8rem; margin-top: 0.3rem; display: none; }
+  .form-success {
+    background: rgba(79,163,232,0.08);
+    border: 0.5px solid var(--border2);
+    border-radius: 6px;
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+    display: none;
+  }
+  .form-success.show { display: block; }
+
+  /* REGISTERED USER PANEL */
+  #user-panel {
+    display: none;
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 300;
+    background: var(--bg);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  #user-panel.open { display: flex; }
+  .welcome-title { font-family: 'Syne', sans-serif; font-size: 2.5rem; font-weight: 800; color: var(--accent); margin-bottom: 0.5rem; }
+  .welcome-sub { color: var(--text2); margin-bottom: 2rem; }
+  .btn-back { background: none; border: 1px solid var(--border2); color: var(--text2); padding: 0.6rem 1.5rem; border-radius: 4px; font-family: 'Space Grotesk', sans-serif; cursor: pointer; transition: all 0.2s; }
+  .btn-back:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* FOOTER */
+  footer {
+    background: var(--bg2);
+    border-top: 0.5px solid var(--border);
+    padding: 2rem 3rem;
+    text-align: center;
+    color: var(--text2);
+    font-size: 0.8rem;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .artemis-grid, .teorias-grid { grid-template-columns: 1fr; }
+    .contact-box { padding: 2rem 1.5rem; }
+    section { padding: 4rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- STAR CANVAS -->
+<canvas id="stars"></canvas>
+
+<!-- NAVIGATION -->
+<nav>
+  <a href="#home" class="logo">COSMOS<span>·</span>VERITY</a>
+  <div class="nav-links">
+    <a href="#artemis">Artemis II</a>
+    <a href="#teorias">Teorías</a>
+    <a href="#timeline">Historia</a>
+    <a href="#contacto">Contacto</a>
+  </div>
+  <button class="btn-login" onclick="openLogin()">Iniciar sesión</button>
+</nav>
+
+<!-- HERO -->
+<section id="home" class="page">
+  <div class="hero-tag">🛸 Exploración espacial · Ciencia · Misterio</div>
+  <h1 class="hero-title">
+    <span class="line1">¿LLEGAMOS A</span>
+    <span class="line2">LA LUNA?</span>
+    <span class="line3">Artemis II · Apolo 11 · Verdad y conspiración</span>
+  </h1>
+  <p class="hero-sub">
+    Explorá las misiones más icónicas de la historia espacial: la histórica llegada del Apolo 11 en 1969 y el próximo viaje tripulado del Artemis II. Todo con ojo crítico.
+  </p>
+  <div class="hero-ctas">
+    <a href="#artemis" class="btn-primary">Explorar misiones</a>
+    <a href="#teorias" class="btn-secondary">Ver teorías</a>
+  </div>
+</section>
+
+<!-- ARTEMIS II -->
+<section id="artemis" class="page">
+  <div class="section-inner">
+    <div class="section-label">// MISIÓN ACTIVA</div>
+    <h2 class="section-title">Artemis II<br><span style="color:var(--accent)">El regreso lunar</span></h2>
+    <p class="section-desc">
+      La primera misión tripulada del programa Artemis llevará a cuatro astronautas a orbitar la Luna por primera vez desde el Apolo 17 en 1972. No habrá alunizaje, pero marcará el camino hacia el retorno humano.
+    </p>
+
+    <div class="artemis-grid">
+      <div class="crew-card">
+        <div class="crew-avatar">RW</div>
+        <div class="crew-name">Reid Wiseman</div>
+        <div class="crew-role">Comandante · NASA</div>
+        <div class="crew-desc">Veterano de la ISS con experiencia en misiones de larga duración. Liderará la tripulación durante los ~10 días de misión.</div>
+        <span class="crew-badge">COMANDANTE</span>
+      </div>
+      <div class="crew-card">
+        <div class="crew-avatar" style="background: linear-gradient(135deg, #4fa3e8, #1a2a6e)">VG</div>
+        <div class="crew-name">Victor Glover</div>
+        <div class="crew-role">Piloto · NASA</div>
+        <div class="crew-desc">Primer afroamericano en volar hacia la órbita lunar. Pilotará la cápsula Orion durante las fases críticas de la misión.</div>
+        <span class="crew-badge">HISTORIA VIVA</span>
+      </div>
+      <div class="crew-card">
+        <div class="crew-avatar" style="background: linear-gradient(135deg, #e84f8a, #5e1a3a)">CK</div>
+        <div class="crew-name">Christina Koch</div>
+        <div class="crew-role">Especialista · NASA</div>
+        <div class="crew-desc">Primer mujer en volar hacia la Luna. Poseedora del récord de la estancia espacial más larga para una mujer (328 días en la ISS).</div>
+        <span class="crew-badge">PRIMERA MUJER</span>
+      </div>
+      <div class="crew-card">
+        <div class="crew-avatar" style="background: linear-gradient(135deg, #f5c842, #5e4a1a)">JH</div>
+        <div class="crew-name">Jeremy Hansen</div>
+        <div class="crew-role">Especialista · CSA · Canadá</div>
+        <div class="crew-desc">Primer canadiense en volar hacia la órbita lunar. Representa la colaboración internacional del programa Artemis con la Agencia Espacial Canadiense.</div>
+        <span class="crew-badge">PRIMER CANADIENSE</span>
+      </div>
+    </div>
+
+    <div class="info-cards">
+      <div class="info-card">
+        <div class="info-card-icon">🚀</div>
+        <div class="info-card-title">Cohete</div>
+        <div class="info-card-val">SLS</div>
+        <div class="info-card-desc">Space Launch System, el cohete más poderoso jamás construido por NASA.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">🛸</div>
+        <div class="info-card-title">Cápsula</div>
+        <div class="info-card-val">Orion</div>
+        <div class="info-card-desc">Diseñada para viajes de larga distancia más allá de la órbita baja terrestre.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">📅</div>
+        <div class="info-card-title">Duración</div>
+        <div class="info-card-val">~10 días</div>
+        <div class="info-card-desc">Trayectoria de retorno libre alrededor de la Luna sin alunizaje.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">🌍</div>
+        <div class="info-card-title">Tripulantes</div>
+        <div class="info-card-val">4 astronautas</div>
+        <div class="info-card-desc">La tripulación más diversa en la historia de la exploración lunar.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEORÍAS -->
+<section id="teorias" class="page">
+  <div class="section-inner">
+    <div class="section-label">// APOLO 11 · 1969</div>
+    <h2 class="section-title">¿Verdad o<br><span style="color:var(--accent2)">conspiración?</span></h2>
+    <p class="section-desc">
+      El Apolo 11 fue sin duda el evento más visto de la historia hasta ese momento. Pero desde entonces, millones de personas cuestionan si realmente ocurrió. Acá presentamos ambos lados.
+    </p>
+
+    <div class="teorias-grid">
+      <div class="teoria-card conspiracy">
+        <span class="teoria-tag con">TEORÍA CONSPIRATIVA</span>
+        <div class="teoria-title">La bandera que "ondea" en el vacío</div>
+        <div class="teoria-body">Las imágenes muestran la bandera estadounidense flameando, lo cual sería imposible en la Luna donde no hay atmósfera. Conspiracionistas señalan esto como evidencia de filmación en estudio.</div>
+      </div>
+      <div class="teoria-card fact">
+        <span class="teoria-tag fac">EXPLICACIÓN CIENTÍFICA</span>
+        <div class="teoria-title">El movimiento era por inercia, no por viento</div>
+        <div class="teoria-body">La bandera tenía una varilla horizontal en la parte superior para mantenerse extendida. El movimiento fue causado por los astronautas al clavar el mástil. En el vacío, sin fricción de aire, la inercia mantiene el movimiento por más tiempo.</div>
+      </div>
+      <div class="teoria-card conspiracy">
+        <span class="teoria-tag con">TEORÍA CONSPIRATIVA</span>
+        <div class="teoria-title">Las fotos son "demasiado perfectas"</div>
+        <div class="teoria-body">Los conspiracionistas argumentan que las fotografías tienen una iluminación perfecta, sin estrellas visibles, y que los astronautas sin entrenamiento fotográfico no podrían haber logrado tomas tan buenas.</div>
+      </div>
+      <div class="teoria-card fact">
+        <span class="teoria-tag fac">EXPLICACIÓN CIENTÍFICA</span>
+        <div class="teoria-title">Física de exposición fotográfica</div>
+        <div class="teoria-body">Las estrellas no aparecen porque la exposición estaba ajustada para la superficie brillante iluminada por el Sol. Exactamente igual que en la Tierra: una foto de día no muestra estrellas. Los astronautas tenían cámaras Hasselblad especiales montadas en el pecho.</div>
+      </div>
+      <div class="teoria-card conspiracy">
+        <span class="teoria-tag con">TEORÍA CONSPIRATIVA</span>
+        <div class="teoria-title">Stanley Kubrick filmó el alunizaje</div>
+        <div class="teoria-body">Una teoría popular afirma que Stanley Kubrick, quien acababa de filmar "2001: Odisea del espacio", fue contratado por la NASA para filmar el alunizaje en Hollywood como propaganda de la Guerra Fría.</div>
+      </div>
+      <div class="teoria-card fact">
+        <span class="teoria-tag fac">EVIDENCIA REAL</span>
+        <div class="teoria-title">Pruebas independientes de múltiples países</div>
+        <div class="teoria-body">La URSS (el mayor enemigo de EEUU en esa época) rastreó las misiones Apolo en tiempo real y nunca las refutó. Además, los astronautas dejaron retroreflectores láser en la Luna que aún hoy se usan para medir la distancia exacta Tierra-Luna.</div>
+      </div>
+      <div class="teoria-card conspiracy">
+        <span class="teoria-tag con">TEORÍA CONSPIRATIVA</span>
+        <div class="teoria-title">Radiación Van Allen: mortal</div>
+        <div class="teoria-body">Los cinturones de radiación Van Allen que rodean la Tierra habrían matado a los astronautas o les habrían dado dosis letales de radiación antes de llegar a la Luna.</div>
+      </div>
+      <div class="teoria-card fact">
+        <span class="teoria-tag fac">CIENCIA VERIFICADA</span>
+        <div class="teoria-title">Trayectoria calculada para minimizar exposición</div>
+        <div class="teoria-body">La NASA calculó trayectorias que cruzaban los cinturones en su parte más delgada a gran velocidad. Los astronautas recibieron dosis de radiación equivalentes a unas pocas radiografías de tórax. Dosis preocupantes, sí, pero no letales.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section id="timeline" class="page">
+  <div class="section-inner">
+    <div class="section-label">// CRONOLOGÍA ESPACIAL</div>
+    <h2 class="section-title">Historia de<br><span style="color:var(--accent)">la conquista lunar</span></h2>
+    <br>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">OCTUBRE 1957</div>
+        <div class="tl-title">Sputnik 1 — El primer satélite</div>
+        <div class="tl-desc">La URSS lanza el primer satélite artificial, marcando el inicio de la carrera espacial. EEUU entra en pánico y acelera su programa espacial.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot alt"></div>
+        <div class="tl-year alt">ABRIL 1961</div>
+        <div class="tl-title">Yuri Gagarin orbita la Tierra</div>
+        <div class="tl-desc">El cosmonauta soviético se convierte en el primer ser humano en el espacio. Kennedy responde prometiendo llegar a la Luna antes de que termine la década.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">JULIO 1969</div>
+        <div class="tl-title">Apolo 11 aluniza en el Mar de la Tranquilidad</div>
+        <div class="tl-desc">Armstrong y Aldrin pisan la Luna mientras Collins orbita. "Un pequeño paso para el hombre, un gran salto para la humanidad." 600 millones de personas lo ven en televisión.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot alt"></div>
+        <div class="tl-year alt">DICIEMBRE 1972</div>
+        <div class="tl-title">Apolo 17 — La última vez</div>
+        <div class="tl-desc">Eugene Cernan se convierte en el último ser humano en pisar la Luna hasta la fecha. El programa Apolo termina por razones políticas y presupuestarias.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">NOVIEMBRE 2022</div>
+        <div class="tl-title">Artemis I — Prueba sin tripulación</div>
+        <div class="tl-desc">La cápsula Orion viaja a la Luna y regresa exitosamente sin astronautas. El SLS demuestra ser funcional. El camino hacia el regreso humano está abierto.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot alt"></div>
+        <div class="tl-year alt">2025–2026 (ESTIMADO)</div>
+        <div class="tl-title">Artemis II — El gran regreso</div>
+        <div class="tl-desc">Cuatro astronautas volarán alrededor de la Luna por primera vez en más de 50 años. Primera mujer y primer afroamericano en órbita lunar.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto" class="page">
+  <div class="section-inner">
+    <div class="section-label">// CONTACTO</div>
+    <h2 class="section-title" style="text-align:center">¿Tenés preguntas<br>o <span style="color:var(--accent2)">teorías propias?</span></h2>
+    <div class="contact-box">
+      <p style="color:var(--text2);line-height:1.7;margin-bottom:0.5rem">
+        Nos encanta escuchar nuevas perspectivas sobre la exploración espacial, teorías alternativas, o simplemente consultas sobre las misiones. Escribinos directamente.
+      </p>
+      <a href="mailto:bassboos120@gmail.com" class="contact-email">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+          <polyline points="22,6 12,13 2,6"/>
+        </svg>
+        bassboos120@gmail.com
+      </a>
+      <p style="font-size:0.8rem;color:var(--text2);margin-top:1.5rem">
+        También podés registrarte para acceder a contenido exclusivo, debates y actualizaciones sobre las misiones Artemis.
+      </p>
+      <button class="btn-primary" onclick="openLogin()" style="margin-top:1rem">Crear cuenta gratuita</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 COSMOS VERITY · Exploración espacial con ojo crítico</p>
+  <p style="margin-top:0.4rem">Contacto: <a href="mailto:bassboos120@gmail.com">bassboos120@gmail.com</a></p>
+</footer>
+
+<!-- LOGIN MODAL -->
+<div id="login-overlay">
+  <div class="login-modal">
+    <button class="modal-close" onclick="closeLogin()">×</button>
+    <div class="modal-logo">COSMOS VERITY</div>
+    <div class="modal-subtitle">Accedé a contenido exclusivo sobre misiones espaciales</div>
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('login')">Iniciar sesión</button>
+      <button class="tab-btn" onclick="switchTab('register')">Crear cuenta</button>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <div id="tab-login">
+      <div class="form-group">
+        <label class="form-label">CORREO ELECTRÓNICO</label>
+        <input type="email" class="form-input" id="login-email" placeholder="tu@correo.com">
+        <div class="form-error" id="login-email-err">Ingresá un correo válido</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">CONTRASEÑA</label>
+        <input type="password" class="form-input" id="login-pass" placeholder="••••••••">
+        <div class="form-error" id="login-pass-err">Ingresá tu contraseña</div>
+      </div>
+      <div class="form-error" id="login-general-err" style="margin-bottom:0.8rem">Correo o contraseña incorrectos</div>
+      <button class="btn-submit" onclick="doLogin()">Entrar al universo →</button>
+      <div class="divider">o</div>
+      <button class="btn-google" onclick="doGoogleLogin()">
+        <svg class="google-icon" viewBox="0 0 24 24">
+          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+        </svg>
+        Continuar con Google
+      </button>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div id="tab-register" style="display:none">
+      <div class="form-group">
+        <label class="form-label">NOMBRE</label>
+        <input type="text" class="form-input" id="reg-name" placeholder="Tu nombre">
+        <div class="form-error" id="reg-name-err">Ingresá tu nombre</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">CORREO ELECTRÓNICO</label>
+        <input type="email" class="form-input" id="reg-email" placeholder="tu@correo.com">
+        <div class="form-error" id="reg-email-err">Ingresá un correo válido</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">CONTRASEÑA</label>
+        <input type="password" class="form-input" id="reg-pass" placeholder="Mínimo 6 caracteres">
+        <div class="form-error" id="reg-pass-err">La contraseña debe tener al menos 6 caracteres</div>
+      </div>
+      <div class="form-success" id="reg-success">
+        ✓ Cuenta creada exitosamente. ¡Bienvenido a COSMOS VERITY!
+      </div>
+      <div class="form-success" id="reg-confirm-msg">
+        ✉ Revisá tu correo para confirmar tu cuenta.
+      </div>
+      <button class="btn-submit" id="reg-btn" onclick="doRegister()">Crear cuenta →</button>
+      <div class="divider">o</div>
+      <button class="btn-google" onclick="doGoogleLogin()">
+        <svg class="google-icon" viewBox="0 0 24 24">
+          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+        </svg>
+        Registrarse con Google
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- USER WELCOME PANEL -->
+<div id="user-panel">
+  <div class="welcome-title">🚀 ¡Bienvenido!</div>
+  <div class="welcome-sub" id="welcome-name">Has iniciado sesión correctamente</div>
+  <p style="color:var(--text2);font-size:0.9rem;max-width:400px;text-align:center;margin-bottom:2rem">
+    Ahora tenés acceso a debates exclusivos, actualizaciones de misiones y contenido especial.
+  </p>
+  <button class="btn-back" onclick="backToSite()">← Volver al sitio</button>
+  <button class="btn-back" onclick="doLogout()" style="margin-top:0.5rem;background:var(--accent2)">Cerrar sesión</button>
+</div>
+
+<script src="auth.js"></script>
+<script>
+// STARS
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
+function resize(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+resize(); window.addEventListener('resize', resize);
+const stars = Array.from({length:180},()=>({
+  x: Math.random()*window.innerWidth,
+  y: Math.random()*window.innerHeight,
+  r: Math.random()*1.2+0.2,
+  o: Math.random()*0.6+0.2,
+  s: Math.random()*0.4+0.1
+}));
+function drawStars(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  stars.forEach(s=>{
+    s.o += (Math.random()-0.5)*0.02;
+    s.o = Math.max(0.1,Math.min(0.9,s.o));
+    ctx.beginPath();
+    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(200,220,255,${s.o})`;
+    ctx.fill();
+  });
+  requestAnimationFrame(drawStars);
+}
+drawStars();
+
+// AUTH - Netlify Identity
+const { login, signup, logout, getUser, oauthLogin, handleAuthCallback, onAuthChange, AUTH_EVENTS, AuthError, MissingIdentityError } = window.NetlifyAuth;
+
+function openLogin(){ document.getElementById('login-overlay').classList.add('open'); }
+function closeLogin(){ document.getElementById('login-overlay').classList.remove('open'); }
+document.getElementById('login-overlay').addEventListener('click',function(e){ if(e.target===this) closeLogin(); });
+
+function switchTab(tab){
+  document.getElementById('tab-login').style.display = tab==='login'?'block':'none';
+  document.getElementById('tab-register').style.display = tab==='register'?'block':'none';
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>{
+    b.classList.toggle('active',(tab==='login'&&i===0)||(tab==='register'&&i===1));
+  });
+}
+
+function showErr(id,show){ document.getElementById(id).style.display=show?'block':'none'; }
+
+async function doLogin(){
+  const email = document.getElementById('login-email').value.trim();
+  const pass = document.getElementById('login-pass').value;
+  showErr('login-email-err',!email||!email.includes('@'));
+  showErr('login-pass-err',!pass);
+  showErr('login-general-err',false);
+  if(!email||!email.includes('@')||!pass) return;
+  try {
+    const user = await login(email, pass);
+    welcomeUser(user.name || user.email);
+  } catch(error) {
+    if(error instanceof AuthError){
+      document.getElementById('login-general-err').textContent =
+        error.status === 401 ? 'Correo o contraseña incorrectos' : error.message;
+      showErr('login-general-err',true);
+    }
+  }
+}
+
+async function doRegister(){
+  const name = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const pass = document.getElementById('reg-pass').value;
+  showErr('reg-name-err',!name);
+  showErr('reg-email-err',!email||!email.includes('@'));
+  showErr('reg-pass-err',pass.length<6);
+  if(!name||!email||!email.includes('@')||pass.length<6) return;
+  try {
+    const user = await signup(email, pass, { full_name: name });
+    if(user.emailVerified){
+      document.getElementById('reg-success').classList.add('show');
+      document.getElementById('reg-btn').style.display='none';
+      setTimeout(()=>{ welcomeUser(name); },1500);
+    } else {
+      document.getElementById('reg-confirm-msg').classList.add('show');
+      document.getElementById('reg-btn').style.display='none';
+    }
+  } catch(error) {
+    if(error instanceof AuthError){
+      if(error.status === 403){
+        showErr('reg-email-err',true);
+        document.getElementById('reg-email-err').textContent='Los registros no están habilitados.';
+      } else {
+        showErr('reg-email-err',true);
+        document.getElementById('reg-email-err').textContent=error.message;
+      }
+    }
+  }
+}
+
+function doGoogleLogin(){
+  oauthLogin('google');
+}
+
+async function doLogout(){
+  try {
+    await logout();
+    document.getElementById('user-panel').classList.remove('open');
+  } catch(e) {
+    console.error('Error al cerrar sesión:', e);
+  }
+}
+
+function welcomeUser(name){
+  closeLogin();
+  document.getElementById('welcome-name').textContent = '¡Hola, ' + name + '! Tu cuenta está activa.';
+  document.getElementById('user-panel').classList.add('open');
+}
+function backToSite(){
+  document.getElementById('user-panel').classList.remove('open');
+}
+
+// Process OAuth/confirmation callbacks on page load
+(async function initAuth(){
+  try {
+    const result = await handleAuthCallback();
+    if(result){
+      switch(result.type){
+        case 'oauth':
+          if(result.user) welcomeUser(result.user.name || result.user.email);
+          break;
+        case 'confirmation':
+          if(result.user) welcomeUser(result.user.name || result.user.email);
+          break;
+        case 'recovery':
+          alert('Recuperación de contraseña. Establecé una nueva contraseña.');
+          break;
+      }
+      return;
+    }
+    // Check if already logged in
+    const user = await getUser();
+    if(user){
+      welcomeUser(user.name || user.email);
+    }
+  } catch(e) {
+    console.error('Auth init error:', e);
+  }
+})();
+
+// Listen for auth state changes
+onAuthChange(function(event, user){
+  if(event === AUTH_EVENTS.LOGOUT){
+    document.getElementById('user-panel').classList.remove('open');
+  }
+});
+</script>
+</body>
+</html>
